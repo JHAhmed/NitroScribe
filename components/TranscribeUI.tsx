@@ -67,14 +67,14 @@ function TranscribeUI({
 
                 <Field>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input id="password" type="password" placeholder="Password" />
+                    <Input value={password} onChange={(e) => setPassword(e.target.value)} id="password" type="password" placeholder="Password" />
                     <FieldDescription>
                         Your password is encrypted and stored securely.
                     </FieldDescription>
                 </Field>
             </div>
             <Button
-                disabled={!audioFile || !language}
+                disabled={!audioFile || !language || !password}
                 className="mt-6"
                 onClick={() => {
                     toast.promise(uploadAudio(), {

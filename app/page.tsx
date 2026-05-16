@@ -26,8 +26,11 @@ export default function Page() {
         console.log(data)
         if (res.ok) {
             setTranscription(data.transcription.text)
+            return data
         } else {
-            alert("Transcription failed: " + data.error)
+            return new Response(data.message || "Something went wrong", {
+                status: res.status,
+            })
         }
     }
 

@@ -16,8 +16,9 @@ type DropdownProps = {
         value: string
     }[]
     value?: string
+    disabled?: boolean
     onValueChange?: (value: string) => void
-} & ComponentProps<"button">
+} 
 
 const items = [
     { label: "English", value: "english" },
@@ -31,10 +32,10 @@ function Dropdown({
     value,
     id,
     onValueChange,
-    ...props
+    disabled = false,
 }: DropdownProps) {
     return (
-        <Select disabled={props.disabled} onValueChange={onValueChange} value={value} {...props}>
+        <Select disabled={disabled} onValueChange={onValueChange} value={value}>
             <SelectTrigger id={id} className="w-[180px]">
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>

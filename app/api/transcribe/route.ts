@@ -11,6 +11,7 @@ export async function POST(request: Request) {
     const password = formData.get("password") as string
 
     if (password !== process.env.PASSWORD) {
+        console.log("Unauthorized access attempt with password:", password)
         return new Response("Unauthorized", {
             status: 401,
         })
