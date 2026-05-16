@@ -1,19 +1,54 @@
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { TranscribeUI } from "@/components/TranscribeUI"
+import { TranscriptUI } from "@/components/TranscriptUI"
+import { useState } from "react"
 
 export default function Page() {
-  return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    const [language, setLanguage] = useState("")
+    const [audioFile, setAudioFile] = useState<File | null>(null)
+    const [transcription, setTranscription] = useState("")
+    const [password, setPassword] = useState("")
+
+    async function uploadAudio() {
+        if (!audioFile || !password) return
+
+        const formData = new FormData()
+        formData.append("audio", audioFile)
+        formData.append("password", password)
+
+        const res = await fetch("/api/transcribe", {
+            method: "POST",
+            body: formData,
+        })
+
+        const data = await res.json()
+        console.log(data)
+        if (res.ok) {
+            setTranscription(data.transcription.text)
+        } else {
+            alert("Transcription failed: " + data.error)
+        }
+    }
+
+    return (
+        <div className="mx-8 flex min-h-[50vh] flex-col items-center justify-center rounded-3xl border border-accent-foreground/1 bg-gray-100 p-6 transition-all duration-300 hover:border-accent-foreground/5 hover:shadow-xl/2 md:w-1/2 dark:bg-gray-900">
+            {!transcription ? (
+                <TranscribeUI
+                    audioFile={audioFile}
+                    setAudioFile={setAudioFile}
+                    language={language}
+                    setLanguage={setLanguage}
+                    password={password}
+                    setPassword={setPassword}
+                    uploadAudio={uploadAudio}
+                />
+            ) : (
+                <TranscriptUI
+                    transcription={transcription}
+                    setTranscription={setTranscription}
+                />
+            )}
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
-  )
+    )
 }
