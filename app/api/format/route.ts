@@ -6,17 +6,17 @@ const FormattedTranscriptSchema = z.object({
     roleLearningDevelopment: z
         .array(z.string())
         .describe(
-            "Bullet points about the employee's role, learning, professional growth, training, skills development, work experience, and career aspirations"
+            "Numbered points about the employee's role, learning, professional growth, training, skills development, work experience, and career aspirations"
         ),
     concernsConsiderations: z
         .array(z.string())
         .describe(
-            "Bullet points about concerns, issues, challenges, problems faced, salary concerns, work-life balance issues, infrastructure problems, and areas needing attention"
+            "Numbered points about concerns, issues, challenges, problems faced, salary concerns, work-life balance issues, infrastructure problems, and areas needing attention"
         ),
     suggestionsAppreciations: z
         .array(z.string())
         .describe(
-            "Bullet points about suggestions for improvement, appreciations, positive feedback, recommendations, and things the employee values or would like to see changed"
+            "Numbered points about suggestions for improvement, appreciations, positive feedback, recommendations, and things the employee values or would like to see changed"
         ),
 })
 
@@ -68,7 +68,7 @@ Example bullet points:
 3. "Fixed Date for Salary (better to know to plan my commitments)"
 4. "Plan for Team lunch"
 
-Keep each bullet point concise but informative. The bullet points need to be numbered. Preserve the employee's voice and specific details. If a category has no relevant content in the transcript, return an empty array for that category.`,
+Keep each point concise but informative. The points need to be numbered. Preserve the employee's voice and specific details. If a category has no relevant content in the transcript, return an empty array for that category.`,
                 },
                 {
                     role: "user",

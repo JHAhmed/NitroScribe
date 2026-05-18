@@ -9,12 +9,11 @@ import type { FormattedTranscript } from "@/app/api/format/route"
 export default function Page() {
     const [language, setLanguage] = useState("")
     const [audioFile, setAudioFile] = useState<File | null>(null)
-    const [transcription, setTranscription] = useState(
-        "Because democracy basically means government by the people, of the people, for the people. But the people are retarded"
-    )
+    const [transcription, setTranscription] = useState("")
     const [password, setPassword] = useState("")
     const [openAIAPIKey, setOpenAIAPIKey] = useState("")
     const [mounted, setMounted] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [formattedData, setFormattedData] =
         useState<FormattedTranscript | null>(null)
     const [isFormatting, setIsFormatting] = useState(false)
@@ -28,6 +27,8 @@ export default function Page() {
     async function uploadAudio() {
         if (!audioFile) return
 
+        setLoading(true)
+
         const formData = new FormData()
         formData.append("audio", audioFile)
         formData.append("password", password)
@@ -39,6 +40,7 @@ export default function Page() {
 
         const data = await res.json()
         console.log(data)
+        setLoading(false)
         if (res.ok) {
             setTranscription(data.transcription.text)
             return data
@@ -52,6 +54,7 @@ export default function Page() {
     async function formatTranscription() {
         if (!transcription) return
 
+        setLoading(true)
         setIsFormatting(true)
         try {
             const res = await fetch("/api/format", {
@@ -71,6 +74,7 @@ export default function Page() {
             }
         } finally {
             setIsFormatting(false)
+            setLoading(false)
         }
     }
 
@@ -98,6 +102,8 @@ export default function Page() {
                     uploadAudio={uploadAudio}
                     password={password}
                     mounted={mounted}
+                    loading={loading}
+                    setLoading={setLoading}
                     setPassword={setPassword}
                 />
             ) : (
@@ -106,6 +112,7 @@ export default function Page() {
                     setTranscription={setTranscription}
                     formatTranscription={formatTranscription}
                     openAIKeyAvailable={!!openAIAPIKey}
+                    loading={loading}
                     isFormatting={isFormatting}
                 />
             )}

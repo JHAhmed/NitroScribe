@@ -6,6 +6,7 @@ type TranscriptUIProps = {
     setTranscription?: (value: string) => void
     formatTranscription?: () => Promise<void>
     openAIKeyAvailable?: boolean
+    loading?: boolean
     isFormatting?: boolean
 }
 
@@ -14,6 +15,7 @@ function TranscriptUI({
     setTranscription = () => {},
     formatTranscription = () => Promise.resolve(),
     openAIKeyAvailable = false,
+    loading = false,
     isFormatting = false,
 }: TranscriptUIProps) {
     return (
@@ -34,7 +36,7 @@ function TranscriptUI({
             <div className="flex gap-2">
                 <Button
                     className="mt-4"
-                    disabled={isFormatting}
+                    disabled={isFormatting || loading}
                     onClick={() => {
                         toast.promise(formatTranscription(), {
                             loading: "Formatting transcript...",

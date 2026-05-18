@@ -13,6 +13,8 @@ type TranscribeUIProps = {
     password?: string
     setPassword?: (value: string) => void
     uploadAudio?: () => Promise<void>
+    loading?: boolean
+    setLoading?: (value: boolean) => void
     mounted?: boolean
 }
 
@@ -23,6 +25,8 @@ function TranscribeUI({
     setLanguage = () => {},
     password = "",
     setPassword = () => {},
+    loading = false,
+    setLoading = () => {},
     mounted = false,
     uploadAudio = async () => {},
 }: TranscribeUIProps) {
@@ -74,7 +78,7 @@ function TranscribeUI({
                 )} */}
             </div>
             <Button
-                disabled={!audioFile || !language}
+                disabled={!audioFile || !language || loading}
                 className="mt-6"
                 onClick={() => {
                     toast.promise(uploadAudio(), {
