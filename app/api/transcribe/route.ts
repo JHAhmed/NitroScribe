@@ -1,18 +1,18 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js"
 
 export async function POST(request: Request) {
-
     const formData = await request.formData()
 
     const audio = formData.get("audio") as File
-    const password = formData.get("password") as string
+    let password = formData.get("password") as string
 
+    if (!password) {
+        password = process.env.ELEVENLABS_API_KEY as string
+    }
 
     const elevenlabs = new ElevenLabsClient({
         apiKey: password,
     })
-
-
 
     // if (password !== process.env.PASSWORD) {
     //     console.log("Unauthorized access attempt with password:", password)

@@ -24,13 +24,17 @@ export type FormattedTranscript = z.infer<typeof FormattedTranscriptSchema>
 
 export async function POST(request: Request) {
     try {
-        const { transcription, openAIAPIKey } = await request.json()
+        let { transcription, openAIAPIKey } = await request.json()
 
-        if (!transcription || !openAIAPIKey) {
+        if (!transcription) {
             return Response.json(
                 { message: "Missing transcription or API key" },
                 { status: 400 }
             )
+        }
+
+        if (!openAIAPIKey) {
+            openAIAPIKey = process.env.OPENAI_API_KEY
         }
 
         const openai = new OpenAI({ apiKey: openAIAPIKey })

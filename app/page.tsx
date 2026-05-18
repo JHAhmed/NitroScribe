@@ -9,7 +9,9 @@ import type { FormattedTranscript } from "@/app/api/format/route"
 export default function Page() {
     const [language, setLanguage] = useState("")
     const [audioFile, setAudioFile] = useState<File | null>(null)
-    const [transcription, setTranscription] = useState("")
+    const [transcription, setTranscription] = useState(
+        "Because democracy basically means government by the people, of the people, for the people. But the people are retarded"
+    )
     const [password, setPassword] = useState("")
     const [openAIAPIKey, setOpenAIAPIKey] = useState("")
     const [mounted, setMounted] = useState(false)
@@ -24,7 +26,7 @@ export default function Page() {
     }, [])
 
     async function uploadAudio() {
-        if (!audioFile || !password) return
+        if (!audioFile) return
 
         const formData = new FormData()
         formData.append("audio", audioFile)
@@ -48,7 +50,7 @@ export default function Page() {
     }
 
     async function formatTranscription() {
-        if (!transcription || !openAIAPIKey) return
+        if (!transcription) return
 
         setIsFormatting(true)
         try {
