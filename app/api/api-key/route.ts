@@ -1,35 +1,27 @@
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js"
 
 export async function POST(request: Request) {
+    const elevenlabs = new ElevenLabsClient({
+        apiKey: process.env.ELEVENLABS_API_KEY,
+    })
 
     const formData = await request.formData()
 
     const audio = formData.get("audio") as File
     const password = formData.get("password") as string
 
-
-    const elevenlabs = new ElevenLabsClient({
-        apiKey: password,
-    })
-
-
-
-    // if (password !== process.env.PASSWORD) {
-    //     console.log("Unauthorized access attempt with password:", password)
-    //     return new Response("Unauthorized", {
-    //         status: 401,
-    //     })
-    // }
+    if (password !== process.env.PASSWORD) {
+        console.log("Unauthorized access attempt with password:", password)
+        return new Response("Unauthorized", {
+            status: 401,
+        })
+    }
 
     if (!(audio instanceof File)) {
         return new Response("No audio file uploaded", {
             status: 400,
         })
     }
-
-    console.log(audio.name)
-    console.log(audio.type)
-    console.log(audio.size)
 
     const arrayBuffer = await audio.arrayBuffer()
     const audioBlob = new Blob([await audio.arrayBuffer()], {

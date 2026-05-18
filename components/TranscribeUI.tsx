@@ -13,6 +13,7 @@ type TranscribeUIProps = {
     password?: string
     setPassword?: (value: string) => void
     uploadAudio?: () => Promise<void>
+    mounted?: boolean
 }
 
 function TranscribeUI({
@@ -22,6 +23,7 @@ function TranscribeUI({
     setLanguage = () => {},
     password = "",
     setPassword = () => {},
+    mounted = false,
     uploadAudio = async () => {},
 }: TranscribeUIProps) {
     return (
@@ -33,7 +35,7 @@ function TranscribeUI({
             <p className="font-mono text-sm text-gray-600 dark:text-gray-400">
                 Because Nitro {">"} Turbo
             </p>
-            <div className="mt-6 flex flex-col items-center gap-4">
+            <div className="mt-6 flex flex-col items-center gap-6">
                 <Field>
                     <FieldLabel htmlFor="audio">Audio</FieldLabel>
                     <Input
@@ -65,13 +67,12 @@ function TranscribeUI({
                     </FieldDescription>
                 </Field>
 
-                <Field>
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input value={password} onChange={(e) => setPassword(e.target.value)} id="password" type="password" placeholder="Password" />
-                    <FieldDescription>
-                        Your password is encrypted and stored securely.
-                    </FieldDescription>
-                </Field>
+{mounted && !password && (
+  <div className="w-full rounded-md border border-red-500/10 bg-red-50 p-2 text-center text-sm font-medium text-red-500 dark:bg-red-950/50">
+    <p>You have not set your ElevenLabs API Key!</p>
+  </div>
+)}
+
             </div>
             <Button
                 disabled={!audioFile || !language || !password}
