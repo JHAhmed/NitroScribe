@@ -47,7 +47,7 @@ function TranscribeUI({
                         }}
                         id="audio"
                         type="file"
-                        accept=".mp3, .aac, .wav, .flac"
+                        accept=".mp3, .aac, .wav, .flac, .mp4, .mov, .webm"
                     />
                     <FieldDescription>
                         Select an audio file to upload.
@@ -67,12 +67,11 @@ function TranscribeUI({
                     </FieldDescription>
                 </Field>
 
-{mounted && !password && (
-  <div className="w-full rounded-md border border-red-500/10 bg-red-50 p-2 text-center text-sm font-medium text-red-500 dark:bg-red-950/50">
-    <p>You have not set your ElevenLabs API Key!</p>
-  </div>
-)}
-
+                {mounted && !password && (
+                    <div className="w-full rounded-md border border-red-500/10 bg-red-50 p-2 text-center text-sm font-medium text-red-500 dark:bg-red-950/50">
+                        <p>You have not set your ElevenLabs API Key!</p>
+                    </div>
+                )}
             </div>
             <Button
                 disabled={!audioFile || !language || !password}
